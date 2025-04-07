@@ -2,8 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Modal, Pressable, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
+import appfirebase from '../firebaseconfig'; 
+import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, query, where, orderBy, onSnapshot } from "firebase/firestore";
+
+const db= getFirestore(appfirebase)
+
+
 const FormularioHelpdesk = () => {
-  // Función para formatear la fecha en español
+  // Función para formatear la fecha 
   const formatearFecha = (fecha: Date) => {
     const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
     const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
@@ -56,25 +62,44 @@ const FormularioHelpdesk = () => {
     setModalVisible(false);
   };
 
-  const enviarFormulario = () => {
+  
+  
+  const guardarTicket = async () => {
+    try {
+      await addDoc(collection(db, 'tickets'), {
+        ...datosFormulario,
+        fecha: new Date().toISOString()
+      });
+      return true;
+    } catch (error) {
+      console.error("Error al guardar el ticket:", error);
+      return false;
+    }
+  };
+  
+  const enviarFormulario = async () => {
     if (!datosFormulario.nombre || !datosFormulario.email || !datosFormulario.asunto || !datosFormulario.descripcion) {
       Alert.alert('Error', 'Por favor complete todos los campos obligatorios');
       return;
     }
-
-    console.log('Datos del ticket:', datosFormulario);
-    Alert.alert('Éxito', 'Su ticket ha sido enviado correctamente');
-    
-    setDatosFormulario({
-      nombre: '',
-      email: '',
-      departamento: 'TI',
-      prioridad: 'Media',
-      asunto: '',
-      descripcion: '',
-    });
+  
+    const exito = await guardarTicket();
+  
+    if (exito) {
+      Alert.alert('Éxito', 'Su ticket ha sido enviado correctamente');
+      setDatosFormulario({
+        nombre: '',
+        email: '',
+        departamento: 'TI',
+        prioridad: 'Media',
+        asunto: '',
+        descripcion: '',
+      });
+    } else {
+      Alert.alert('Error', 'Hubo un problema al enviar el ticket. Intente nuevamente.');
+    }
   };
-
+  
   const opcionesMostrar = tipoSeleccion === 'departamento' ? departamentos : prioridades;
 
   return (
@@ -212,6 +237,8 @@ const FormularioHelpdesk = () => {
     </View>
   );
 };
+
+
 
 const estilos = StyleSheet.create({
   contenedor: {
