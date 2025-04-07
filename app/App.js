@@ -5,10 +5,9 @@ import { StatusBar, View, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import BottomTab from './src/components/navigation/bottomTab';
 import { login } from './src/screens/login';
-import homeScreen from './src/screens/homeScreen';
+import FormularioHelpdesk from './src/screens/FormularioHelpdesk';
 
 const Stack = createNativeStackNavigator();
-
 
 
 const MyStack = () => {
@@ -17,8 +16,16 @@ const MyStack = () => {
       <View style={{ flex: 1 }}>
         <StatusBar backgroundColor="#2c3e50" barStyle="light-content" />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Login" component={login} />
-          <Stack.Screen name="Home" component={homeScreen} />
+          <Stack.Screen name="Login" component={login} 
+            options ={{
+              title: "LOGIN",
+              headerTintColor :"white",
+              headertitleAling:"center",
+              headerStyle: {backgroundColor:"#3498db"},
+            
+          }}
+          />
+          <Stack.Screen name="Formulario Helpdesk" component={FormularioHelpdesk} />
           
         </Stack.Navigator>
         <BottomTab />

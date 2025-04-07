@@ -8,7 +8,7 @@ const BottomTab = () => {
         <Text>Inicio</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.tab}>
-        <Text>Nuevo</Text>
+        <Text>Helpdesk</Text>
       </TouchableOpacity>
     </View>
   );
