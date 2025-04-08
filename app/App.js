@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import BottomTab from './src/components/navigation/bottomTab';
 import { login } from './src/screens/login';
 import FormularioHelpdesk from './src/screens/FormularioHelpdesk';
+import homeScreen from './src/screens/homeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ const MyStack = () => {
           }}
           />
           <Stack.Screen name="Formulario Helpdesk" component={FormularioHelpdesk} />
+          <Stack.Screen name="homeScreen" component={homeScreen}/>
           
         </Stack.Navigator>
         <BottomTab />
