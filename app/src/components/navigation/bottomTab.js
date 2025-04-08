@@ -1,37 +1,30 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import Ionicons from '@expo/vector-icons/Ionicons';
-
-const Formu = async() => {
-    try{
-      props.navigation.navigate('Formulario Helpdesk')
-    }catch(error) {
-      console.log(error);
-    }
-  }
-
-  const homeS = async() => {
-    try{
-      props.navigation.navigate('homeScreen')
-    }catch(error) {
-      console.log(error);
-    }
-  }
-
+import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const BottomTab = () => {
+  const navigation = useNavigation(); // 💡 obtenemos navegación con hook
+
+  const goToFormulario = () => {
+    navigation.navigate('Formulario Helpdesk');
+  };
+
+  const goToHome = () => {
+    navigation.navigate('homeScreen');
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.tab} onPress={Formu}>
-        <Text>
-        <Ionicons name="home" size={40} color="#3498db" />
-        </Text>
+      <TouchableOpacity style={styles.tab} onPress={goToHome}>
+        <Ionicons name="home" size={30} color="#3498db" />
+        <Text style={styles.label}>Inicio</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.tab}onPress={homeS}>
-        <Text>
-          <MaterialIcons name="support-agent" size={40} color="#3498db" />
-        </Text>
+
+      <TouchableOpacity style={styles.tab} onPress={goToFormulario}>
+        <MaterialIcons name="support-agent" size={30} color="#3498db" />
+        <Text style={styles.label}>Helpdesk</Text>
       </TouchableOpacity>
     </View>
   );
@@ -43,21 +36,23 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 53,
+    height: 60,
     backgroundColor: '#fff',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
-    zIndex: 999, // aseguramos que esté encima
-    borderRadius: 30,
-    marginLeft: 30,
-    marginRight: 30
+    zIndex: 999,
   },
   tab: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  label: {
+    fontSize: 12,
+    color: '#333',
   },
 });
 
