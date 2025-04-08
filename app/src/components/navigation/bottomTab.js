@@ -4,8 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+
 const BottomTab = () => {
-  const navigation = useNavigation(); // 💡 obtenemos navegación con hook
+  const navigation = useNavigation();
 
   const goToFormulario = () => {
     navigation.navigate('Formulario Helpdesk');
