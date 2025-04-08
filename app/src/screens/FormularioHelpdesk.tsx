@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Modal, Pres
 import { MaterialIcons } from '@expo/vector-icons';
 
 
-import appfirebase from '../../../firebaseconfig'; 
+import { appfirebase } from '../../../firebaseconfig';
 import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, query, where, orderBy, onSnapshot } from "firebase/firestore";
 
 const db= getFirestore(appfirebase)

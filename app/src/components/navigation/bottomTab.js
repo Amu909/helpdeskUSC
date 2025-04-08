@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 
 const BottomTab = () => {
@@ -16,6 +17,10 @@ const BottomTab = () => {
     navigation.navigate('homeScreen');
   };
 
+  const goToGrilla = () =>{
+    navigation.navigate('grilla')
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.tab} onPress={goToHome}>
@@ -26,6 +31,11 @@ const BottomTab = () => {
       <TouchableOpacity style={styles.tab} onPress={goToFormulario}>
         <MaterialIcons name="support-agent" size={30} color="#3498db" />
         <Text style={styles.label}>Helpdesk</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.tab} onPress={goToGrilla}>
+      <FontAwesome5 name="list-alt" size={30} color="#3498db" />
+        <Text style={styles.label}>Grilla</Text>
       </TouchableOpacity>
     </View>
   );

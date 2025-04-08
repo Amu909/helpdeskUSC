@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "firebaseconfig.js", "app/App.js"  ]
+, "firebaseconfig.js", "app/App.js", "app/src/screens/grilla.js"  ]
 }

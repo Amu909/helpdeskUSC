@@ -6,9 +6,9 @@ const homeScreen = () =>{
     return (
 
         <View>
-            <text>
+            <Text>
                 Estas en el home
-            </text>
+            </Text>
         </View>
 
 

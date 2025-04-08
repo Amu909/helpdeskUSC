@@ -1,39 +1,42 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar, View, StyleSheet } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { StatusBar, StyleSheet } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+import AppNavigator from './src/components/navigation/AppNavigator';
 import BottomTab from './src/components/navigation/bottomTab';
-import { login } from './src/screens/login';
-import FormularioHelpdesk from './src/screens/FormularioHelpdesk';
-import homeScreen from './src/screens/homeScreen';
+import Login from './src/screens/login';
 
 const Stack = createNativeStackNavigator();
 
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-const MyStack = () => {
   return (
-    <NavigationContainer>
-      <View style={{ flex: 1 }}>
+    <GestureHandlerRootView style={styles.container}>
+      <NavigationContainer>
         <StatusBar backgroundColor="#2c3e50" barStyle="light-content" />
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Login" component={login} 
-            options ={{
-              title: "LOGIN",
-              headerTintColor :"white",
-              headertitleAling:"center",
-              headerStyle: {backgroundColor:"#3498db"},
-            
-          }}
-          />
-          <Stack.Screen name="Formulario Helpdesk" component={FormularioHelpdesk} />
-          <Stack.Screen name="homeScreen" component={homeScreen}/>
-          
-        </Stack.Navigator>
-        <BottomTab />
-      </View>
-    </NavigationContainer>
+        {!isLoggedIn ? (
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Login">
+              {props => <Login {...props} setIsLoggedIn={setIsLoggedIn} />}
+            </Stack.Screen>
+          </Stack.Navigator>
+        ) : (
+          <>
+            <AppNavigator />
+            <BottomTab />
+          </>
+        )}
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
-};
+}
 
-export default MyStack;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
