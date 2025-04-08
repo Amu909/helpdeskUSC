@@ -37,7 +37,7 @@ const FormularioHelpdesk = () => {
   const [seleccionActual, setSeleccionActual] = useState('');
   const [tipoSeleccion, setTipoSeleccion] = useState('');
 
-  const departamentos = ['TI', 'RRHH', 'Finanzas', 'Operaciones', 'Otro'];
+  const departamentos = ['TI', 'RRHH', 'Finanzas', 'Operaciones', 'Otros'];
   const prioridades = ['Baja', 'Media', 'Alta', 'Crítica'];
 
   const manejarCambio = (nombre: string, valor: string) => {
