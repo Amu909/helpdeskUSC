@@ -309,11 +309,11 @@ const estilos = StyleSheet.create({
   },
   botonEnviar: {
     backgroundColor: '#3498db',
-    padding: 14,
+    padding: 10,
     borderRadius: 6,
     alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: 30,
+    marginBottom: 40,
   },
   textoBotonEnviar: {
     color: '#fff',

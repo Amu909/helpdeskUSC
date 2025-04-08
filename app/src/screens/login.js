@@ -1,9 +1,28 @@
 // src/screens/Login.tsx
-import { Text, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
-import React from 'react';
+import { Text, StyleSheet, View, Image, TouchableOpacity, Alert} from 'react-native';
+import React, { useState } from 'react';
 import { TextInput } from 'react-native-gesture-handler';
 
-export function login() {
+import appfirebase from '../../../firebaseconfig';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+const auth = getAuth(appfirebase)
+
+export function login(props) {
+
+  const [email, setEmail] = useState() 
+  const [password, setPassword] =useState()
+
+  const logeo = async() => {
+    try{
+      await signInWithEmailAndPassword(auth, email, password)
+      Alert.alert('Iniciando sesion', 'Accediendo...')
+      props.navigation.navigate('Formulario Helpdesk')
+    }catch(error) {
+      console.log(error);
+    }
+  }
+    
+
   return (
     <View style={styles.container}>
       <Image
@@ -20,6 +39,7 @@ export function login() {
             placeholder="correo@usc.edu.co"
             keyboardType="email-address"
             style={styles.input}
+            onChangeText={((text)=> setEmail(text))}
           />
         </View>
 
@@ -27,12 +47,13 @@ export function login() {
           <Text style={styles.label}>Contraseña</Text>
           <TextInput
             placeholder="password"
+            onChangeText={((text)=> setPassword(text))}
             secureTextEntry
             style={styles.input}
           />
         </View>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={logeo}>
           <Text style={styles.buttonText}>Iniciar sesión</Text>
         </TouchableOpacity>
       </View>
