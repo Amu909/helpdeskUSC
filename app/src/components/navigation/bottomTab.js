@@ -1,14 +1,20 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const BottomTab = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.tab}>
-        <Text>Inicio</Text>
+        <Text>
+        <Ionicons name="home" size={40} color="#3498db" />
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.tab}>
-        <Text>Helpdesk</Text>
+        <Text>
+          <MaterialIcons name="support-agent" size={40} color="#3498db" />
+        </Text>
       </TouchableOpacity>
     </View>
   );
