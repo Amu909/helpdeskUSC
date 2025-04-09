@@ -11,9 +11,6 @@ const homeScreen = () =>{
             </Text>
         </View>
 
-
-
-
     )
 
 

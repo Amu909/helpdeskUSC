@@ -27,7 +27,7 @@ export default function Login(props) {
         style={styles.profile}
       />
       <View style={styles.card}>
-        <Text style={styles.title}>Bienvenido</Text>
+        <Text style={styles.title}>Bienvenido Verifica tu identidad para continuar</Text>
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Correo institucional</Text>
           <TextInput
@@ -49,7 +49,12 @@ export default function Login(props) {
         <TouchableOpacity style={styles.button} onPress={logeo}>
           <Text style={styles.buttonText}>Iniciar sesión</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity style={styles.buttonreg} onPress={logeo}>
+          <Text style={styles.buttonText}>Registro</Text>
+        </TouchableOpacity>
       </View>
+      
     </View>
   );
 }
@@ -82,6 +87,11 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#007bff', paddingVertical: 15,
+    borderRadius: 8, marginTop: 10, alignItems: 'center',
+  },
+
+  buttonreg: {
+    backgroundColor: '#e31300', paddingVertical: 15,
     borderRadius: 8, marginTop: 10, alignItems: 'center',
   },
   buttonText: { color: '#ffffff', fontSize: 16, fontWeight: 'bold' },
