@@ -28,6 +28,7 @@ export default function App() {
           <>
             <AppNavigator />
             <BottomTab />
+            
           </>
         )}
       </NavigationContainer>

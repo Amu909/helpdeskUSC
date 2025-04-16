@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   ticketContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffffec',
     borderRadius: 15,
     padding: 15,
     marginBottom: 5,

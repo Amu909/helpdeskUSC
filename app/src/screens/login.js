@@ -2,7 +2,8 @@ import { Text, StyleSheet, View, Image, TouchableOpacity, Alert } from 'react-na
 import React, { useState } from 'react';
 import { TextInput } from 'react-native';
 import { auth } from '../../../firebaseconfig';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword} from 'firebase/auth';
+
 
 
 export default function Login(props) {
@@ -17,6 +18,18 @@ export default function Login(props) {
     } catch (error) {
       console.log(error);
       Alert.alert('Error', 'Credenciales inválidas');
+    }
+    
+  };
+
+  const registro = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      Alert.alert('¡Registro exitoso!', 'Sesión iniciada');
+      props.setIsLoggedIn(true); 
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error al registrar', error.message);
     }
   };
 
@@ -50,7 +63,7 @@ export default function Login(props) {
           <Text style={styles.buttonText}>Iniciar sesión</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonreg} onPress={logeo}>
+        <TouchableOpacity style={styles.buttonreg} onPress={registro}>
           <Text style={styles.buttonText}>Registro</Text>
         </TouchableOpacity>
       </View>

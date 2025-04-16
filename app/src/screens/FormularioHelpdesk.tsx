@@ -248,11 +248,12 @@ const estilos = StyleSheet.create({
   },
   encabezado: {
     marginBottom: 8,
+    color:'#3498db'
   },
   tituloEncabezado: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#3498db',
   },
   fechaEncabezado: {
     fontSize: 14,
