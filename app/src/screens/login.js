@@ -36,7 +36,7 @@ export default function Login(props) {
   return (
     <View style={styles.container}>
       <Image
-        source={require('../components/assets/helpdesk.jpg')}
+        source={require('../components/assets/images/helpdesk.jpg')}
         style={styles.profile}
       />
       <View style={styles.card}>
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
   profile: {
     width: 100, height: 100, borderRadius: 50,
-    marginBottom: 20, borderWidth: 2, borderColor: '#007bff',
+    marginBottom: 20, borderWidth: 2, borderColor: '#3498db',
   },
   card: {
     width: '100%', backgroundColor: '#ffffff',
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     fontSize: 16, color: '#212529',
   },
   button: {
-    backgroundColor: '#007bff', paddingVertical: 15,
+    backgroundColor: '#3498db', paddingVertical: 15,
     borderRadius: 8, marginTop: 10, alignItems: 'center',
   },
 

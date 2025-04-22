@@ -5,7 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 const HelpDeskScreen = () => {
   return (
     <ImageBackground 
-      source={require('../components/assets/helpdesk-bg')} 
+      source={require('../components/assets/images/helpdesk-bg.png')} 
       style={styles.container}
       blurRadius={3}
     >
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   button: {
-    backgroundColor: '#4CAF50', // Verde USC (ajusta según branding)
+    backgroundColor: '#3498db', // Verde USC (ajusta según branding)
     padding: 15,
     borderRadius: 30,
     alignItems: 'center',
