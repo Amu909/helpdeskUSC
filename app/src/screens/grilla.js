@@ -3,8 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { collection, onSnapshot, query } from 'firebase/firestore';
-import { db, auth } from '../scripts/firebase'; 
+import { db } from '../../../scripts/firebase'; 
 import { useNavigation } from '@react-navigation/native';
+
+
 
 const Grilla = () => {
   const [tickets, setTickets] = useState([]);
@@ -53,7 +55,7 @@ const Grilla = () => {
   };
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('TicketDetalle', { ticket: item })}>
+    <TouchableOpacity onPress={() => navigation.navigate('Detalle', { ticket: item })}>
       <View style={styles.ticketContainer}>
         <View style={styles.ticketHeader}>
           <Text style={styles.ticketId}>#{item.id}</Text>

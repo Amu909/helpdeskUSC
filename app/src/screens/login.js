@@ -1,7 +1,7 @@
 import { Text, StyleSheet, View, Image, TouchableOpacity, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { TextInput } from 'react-native';
-import { auth } from '../../../firebaseconfig';
+import { auth } from '../../../scripts/firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword} from 'firebase/auth';
 
 

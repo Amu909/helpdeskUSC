@@ -4,7 +4,7 @@
     "slug": "helpdeskUSC",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/helpdesk.jpg",
+    "icon": "../src/components/assets/images/helpdesk.jpg",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,29 +13,39 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "../src/components/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.luismolina25.helpdeskUSC"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/helpdesk.jpg"
+      "favicon": "../src/components/assets/images/helpdesk.jpg"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "../src/components/assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "df203bdf-9fca-4131-9d09-16ad23403c5b"
+      }
     }
   }
 }

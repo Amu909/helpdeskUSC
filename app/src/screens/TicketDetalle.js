@@ -1,11 +1,18 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View, Text, StyleSheet, TouchableOpacity,
+  Alert, TextInput, ScrollView, KeyboardAvoidingView, Platform
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '../scripts/firebase';
+import { doc, setDoc, deleteDoc } from 'firebase/firestore';
+import { db } from '../../../scripts/firebase';
 
 const TicketDetalle = ({ route, navigation }) => {
-  // Validación por si no llegan los parámetros
+  const [tipoCierre, setTipoCierre] = useState('');
+  const [medioAtencion, setMedioAtencion] = useState('');
+  const [comentario, setComentario] = useState('');
+  const [solucion, setSolucion] = useState('');
+
   if (!route || !route.params || !route.params.ticket) {
     return (
       <View style={styles.container}>
@@ -17,95 +24,208 @@ const TicketDetalle = ({ route, navigation }) => {
   const { ticket } = route.params;
 
   const cerrarTicket = async () => {
+    if (!tipoCierre || !medioAtencion || !solucion) {
+      Alert.alert('Campos obligatorios', 'Por favor completa todos los campos antes de cerrar el ticket.');
+      return;
+    }
+
     try {
-      await updateDoc(doc(db, 'tickets', ticket.id), {
-        estado: 'Cerrado'
-      });
-      Alert.alert('Éxito', 'El ticket ha sido cerrado.');
+      const newTicket = {
+        ...ticket,
+        tipoCierre,
+        medioAtencion,
+        comentario,
+        solucion,
+        fechaCierre: new Date().toISOString(),
+        estado: 'Cerrado',
+      };
+
+      await setDoc(doc(db, 'tickets_realizados', ticket.id), newTicket);
+      await deleteDoc(doc(db, 'tickets', ticket.id));
+
+      Alert.alert('Éxito', 'El ticket ha sido cerrado y archivado correctamente.');
       navigation.goBack();
     } catch (error) {
+      console.error(error);
       Alert.alert('Error', 'No se pudo cerrar el ticket.');
     }
   };
 
+  const opcionesTipoCierre = ['Solucionado', 'No Aplica', 'Requiere seguimiento', 'Usuario canceló'];
+  const opcionesMedio = ['Telefónico', 'Correo', 'Presencial', 'Chat', 'Remoto'];
+
+  const renderScrollBox = (opciones, seleccion, setSeleccion) => (
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollBox}>
+      {opciones.map((opcion, index) => (
+        <TouchableOpacity
+          key={index}
+          style={[styles.scrollItem, seleccion === opcion && styles.scrollItemSelected]}
+          onPress={() => setSeleccion(opcion)}
+        >
+          <Text style={[styles.scrollItemText, seleccion === opcion && styles.scrollItemTextSelected]}>
+            {opcion}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  );
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Detalle del Ticket</Text>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <ScrollView contentContainerStyle={styles.content}>
+        <Text style={styles.title}>Detalles del Ticket</Text>
 
-      <View style={styles.card}>
-        <Text style={styles.label}>Asunto:</Text>
-        <Text style={styles.value}>{ticket.asunto}</Text>
+        <View style={styles.card}>
+          <Info label="Asunto" value={ticket.asunto} />
+          <Info label="Solicitante" value={ticket.nombre} />
+          <Info label="Departamento" value={ticket.departamento} />
+          <Info label="Prioridad" value={ticket.prioridad} />
+          <Info label="Fecha" value={ticket.fecha || 'Sin fecha'} />
+          <Info label="Descripción" value={ticket.descripcion || 'Sin descripción'} />
+        </View>
 
-        <Text style={styles.label}>Solicitante:</Text>
-        <Text style={styles.value}>{ticket.nombre}</Text>
+        {/* Tipo de cierre */}
+        <Text style={styles.sectionLabel}>Tipo de Cierre *</Text>
+        {renderScrollBox(opcionesTipoCierre, tipoCierre, setTipoCierre)}
 
-        <Text style={styles.label}>Departamento:</Text>
-        <Text style={styles.value}>{ticket.departamento}</Text>
+        {/* Medio de atención */}
+        <Text style={styles.sectionLabel}>Medio de Atención *</Text>
+        {renderScrollBox(opcionesMedio, medioAtencion, setMedioAtencion)}
 
-        <Text style={styles.label}>Prioridad:</Text>
-        <Text style={styles.value}>{ticket.prioridad}</Text>
+        {/* Solución aplicada */}
+        <Text style={styles.sectionLabel}>¿Qué se hizo para solucionar? *</Text>
+        <TextInput
+          placeholder="Describe la solución aplicada"
+          style={[styles.input, styles.inputMultiline]}
+          value={solucion}
+          onChangeText={setSolucion}
+          multiline
+        />
 
-        <Text style={styles.label}>Fecha:</Text>
-        <Text style={styles.value}>{ticket.fecha || 'Sin fecha'}</Text>
+        {/* Comentario adicional */}
+        <Text style={styles.sectionLabel}>Comentario Adicional</Text>
+        <TextInput
+          placeholder="Observaciones finales (opcional)"
+          style={[styles.input, styles.inputMultiline]}
+          value={comentario}
+          onChangeText={setComentario}
+          multiline
+        />
 
-        <Text style={styles.label}>Descripción:</Text>
-        <Text style={styles.value}>{ticket.descripcion || 'Sin descripción'}</Text>
-      </View>
-
-      <TouchableOpacity style={styles.closeButton} onPress={cerrarTicket}>
-        <Ionicons name="checkmark-done" size={20} color="#fff" />
-        <Text style={styles.closeButtonText}>Cerrar Ticket</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity style={styles.closeButton} onPress={cerrarTicket}>
+          <Ionicons name="checkmark-circle-outline" size={20} color="#fff" />
+          <Text style={styles.closeButtonText}>Cerrar Ticket</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
+
+const Info = ({ label, value }) => (
+  <View style={styles.infoRow}>
+    <Text style={styles.infoLabel}>{label}:</Text>
+    <Text style={styles.infoValue}>{value}</Text>
+  </View>
+);
 
 export default TicketDetalle;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f6f9fc',
+  },
+  content: {
     padding: 20,
-    paddingTop: 60,
+    paddingBottom: 40,
   },
   title: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#3498db',
+    color: '#2c3e50',
     marginBottom: 20,
+    alignSelf: 'center',
   },
   card: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: 15,
-    padding: 20,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 15,
     marginBottom: 30,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowOffset: { width: 0, height: 2 },
     elevation: 2,
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
+    shadowOffset: { width: 0, height: 2 },
   },
-  label: {
-    fontSize: 12,
+  infoRow: {
+    marginBottom: 12,
+  },
+  infoLabel: {
+    fontSize: 13,
     color: '#888',
-    marginTop: 10,
   },
-  value: {
+  infoValue: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#34495e',
+  },
+  sectionLabel: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: '600',
+    color: '#34495e',
+    marginBottom: 6,
+    marginTop: 16,
+  },
+  scrollBox: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  scrollItem: {
+    backgroundColor: '#ecf0f1',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  scrollItemSelected: {
+    backgroundColor: '#2980b9',
+  },
+  scrollItemText: {
+    fontSize: 13,
     color: '#333',
+  },
+  scrollItemTextSelected: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#dcdde1',
+    backgroundColor: '#fff',
+    padding: 12,
+    borderRadius: 8,
+    fontSize: 14,
+    marginBottom: 10,
+  },
+  inputMultiline: {
+    minHeight: 80,
+    textAlignVertical: 'top',
   },
   closeButton: {
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#16a085',
-    padding: 15,
-    borderRadius: 25,
     alignItems: 'center',
+    backgroundColor: '#27ae60',
+    paddingVertical: 14,
+    borderRadius: 30,
+    marginTop: 30,
     gap: 10,
   },
   closeButtonText: {
     color: '#fff',
-    fontWeight: 'bold',
+    fontWeight: '600',
+    fontSize: 16,
   },
 });
